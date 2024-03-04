@@ -14,5 +14,8 @@ namespace Jeremiah_SupermarketOnline.Models
         [Required]
         public string? Address { get; set; }
 
+        //navigation property
+        public List<Order> Orders { get; set; }
+
     }
 }

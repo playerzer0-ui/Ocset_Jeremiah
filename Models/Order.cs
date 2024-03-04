@@ -11,9 +11,10 @@ namespace Jeremiah_SupermarketOnline.Models
         public DateTime OrderDate { get; set; }
 
         [Required]
+        public int Quantity { get; set; }
+
         public int CustomerId { get; set; }
 
-        [Required]
         public int ProductId { get; set; }
 
         //navigation property

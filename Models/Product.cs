@@ -16,5 +16,8 @@ namespace Jeremiah_SupermarketOnline.Models
 
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
+
+        //navigation property
+        public List<Order> Orders { get; set; }
     }
 }
