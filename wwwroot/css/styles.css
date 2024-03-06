@@ -53,3 +53,17 @@ a {
     background: rgb(78,88,237);
     background: linear-gradient(45deg, rgba(78,88,237,1) 0%, rgba(38,244,255,1) 100%);
 }
+
+.top-curve {
+    background: rgb(78,88,237);
+    background: linear-gradient(170deg, rgba(78,88,237,0) 48%, rgba(38,244,255,1) 48%);
+}
+
+.bg-curve {
+    background: #26f4ff;
+}
+
+.bg-curve p {
+    margin: 0;
+    font-size: 1.1em;
+}
