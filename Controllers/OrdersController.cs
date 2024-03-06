@@ -71,19 +71,22 @@ namespace Jeremiah_SupermarketOnline.Controllers
                     ProductId = order.ProductId
                 };
 
+                orderEntity.Customer = await _context.Customer.FirstOrDefaultAsync(m => m.Id == order.CustomerId);
+                if(orderEntity.Customer == null)
+                {
+                    return View(order);
+                }
+                orderEntity.Product = await _context.Product.FirstOrDefaultAsync(m => m.Id == order.ProductId);
+                if (orderEntity.Product == null)
+                {
+                    return View(order);
+                }
+
                 _context.Add(orderEntity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                // Log or debug the validation errors
-                foreach (var error in errors)
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-            }
+
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", order.CustomerId);
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Name", order.ProductId);
             return View(order);
