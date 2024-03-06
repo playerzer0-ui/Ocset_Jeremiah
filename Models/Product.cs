@@ -18,6 +18,6 @@ namespace Jeremiah_SupermarketOnline.Models
         public decimal Price { get; set; }
 
         //navigation property
-        public List<Order> Orders { get; set; }
+        public List<Order> Orders { get; set; } = new List<Order>();
     }
 }

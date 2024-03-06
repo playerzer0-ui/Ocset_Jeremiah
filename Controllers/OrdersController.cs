@@ -49,7 +49,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Address");
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name");
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Name");
             return View();
         }
@@ -59,15 +59,32 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OrderDate,Quantity,CustomerId,ProductId")] Order order)
+        public async Task<IActionResult> Create([Bind("Id,OrderDate,Quantity,CustomerId,ProductId")] OrderCreateViewModel order)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(order);
+                var orderEntity = new Order
+                {
+                    OrderDate = order.OrderDate,
+                    Quantity = order.Quantity,
+                    CustomerId = order.CustomerId,
+                    ProductId = order.ProductId
+                };
+
+                _context.Add(orderEntity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Address", order.CustomerId);
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                // Log or debug the validation errors
+                foreach (var error in errors)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+            }
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", order.CustomerId);
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Name", order.ProductId);
             return View(order);
         }
@@ -85,7 +102,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Address", order.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", order.CustomerId);
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Name", order.ProductId);
             return View(order);
         }
@@ -95,7 +112,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderDate,Quantity,CustomerId,ProductId")] Order order)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderDate,Quantity,CustomerId,ProductId")] OrderEditViewModel order)
         {
             if (id != order.Id)
             {
@@ -106,7 +123,20 @@ namespace Jeremiah_SupermarketOnline.Controllers
             {
                 try
                 {
-                    _context.Update(order);
+                    var existingOrder = await _context.Order.FindAsync(id);
+
+                    if (existingOrder == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Update the properties of the existing order with the values from the view model
+                    existingOrder.OrderDate = order.OrderDate;
+                    existingOrder.Quantity = order.Quantity;
+                    existingOrder.CustomerId = order.CustomerId;
+                    existingOrder.ProductId = order.ProductId;
+
+                    _context.Update(existingOrder);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -122,7 +152,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Address", order.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", order.CustomerId);
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Name", order.ProductId);
             return View(order);
         }

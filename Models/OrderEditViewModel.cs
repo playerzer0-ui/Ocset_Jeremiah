@@ -2,7 +2,7 @@
 
 namespace Jeremiah_SupermarketOnline.Models
 {
-    public class Order
+    public class OrderEditViewModel
     {
         public int Id { get; set; }
 
@@ -13,12 +13,10 @@ namespace Jeremiah_SupermarketOnline.Models
         [Required]
         public int Quantity { get; set; }
 
+        [Required(ErrorMessage = "Please select a customer")]
         public int CustomerId { get; set; }
 
+        [Required(ErrorMessage = "Please select a product")]
         public int ProductId { get; set; }
-
-        //navigation property
-        public Customer Customer { get; set; } = new Customer();
-        public Product Product { get; set; } = new Product();
     }
 }
