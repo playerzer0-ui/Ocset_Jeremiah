@@ -1,0 +1,55 @@
+﻿h1 {
+    font-size: 2.8em;
+    font-weight: bolder;
+}
+
+a {
+    text-decoration: none;
+}
+
+.center-div {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bg-orders {
+    background: rgb(195,7,83);
+    background: linear-gradient(127deg, rgba(195,7,83,1) 0%, rgba(255,152,0,1) 100%);
+}
+
+.bg-customers {
+    background: rgb(186,245,255);
+    background: linear-gradient(127deg, rgba(186,245,255,1) 0%, rgba(255,244,38,1) 100%);
+}
+
+.bg-products {
+    background: rgb(78,88,237);
+    background: linear-gradient(127deg, rgba(78,88,237,1) 0%, rgba(218,38,255,1) 100%);
+}
+
+.card-div {
+    width: 80%;
+    padding: 20px;
+    border-radius: 20px;
+    background: white;
+    overflow: scroll;
+}
+
+.button {
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+    outline: none;
+    transition: 0.4s;
+}
+
+.button:hover {
+    border-radius: 0;
+}
+
+.create-btn {
+    background: rgb(78,88,237);
+    background: linear-gradient(45deg, rgba(78,88,237,1) 0%, rgba(38,244,255,1) 100%);
+}
