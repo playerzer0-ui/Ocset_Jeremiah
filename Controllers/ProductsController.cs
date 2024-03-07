@@ -50,7 +50,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         {
             if(HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Home");
             }
             return View();
         }
@@ -76,7 +76,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         {
             if (HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Home");
             }
             if (id == null || _context.Product == null)
             {
@@ -131,7 +131,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         {
             if (HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Home");
             }
             if (id == null || _context.Product == null)
             {
