@@ -48,6 +48,10 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+            if(HttpContext.Session.GetString("UserName") == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -70,6 +74,10 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetString("UserName") == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null || _context.Product == null)
             {
                 return NotFound();
@@ -121,6 +129,10 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetString("UserName") == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             if (id == null || _context.Product == null)
             {
                 return NotFound();

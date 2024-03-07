@@ -16,6 +16,15 @@ namespace Jeremiah_SupermarketOnline
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            //session
+            builder.Services.AddDistributedMemoryCache(); 
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             var app = builder.Build();
             using (var scope = app.Services.CreateScope())
             {
@@ -38,6 +47,8 @@ namespace Jeremiah_SupermarketOnline
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",
