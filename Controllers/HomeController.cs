@@ -15,11 +15,13 @@ namespace Jeremiah_SupermarketOnline.Controllers
 
         public IActionResult Privacy()
         {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
             return View();
         }
 
         public IActionResult Login()
         {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
             return View();
         }
 

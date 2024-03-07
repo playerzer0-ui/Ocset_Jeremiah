@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Jeremiah_SupermarketOnline.Models
@@ -15,6 +16,7 @@ namespace Jeremiah_SupermarketOnline.Models
         public string? Description { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
+        [RegularExpression("^[+]?([0-9]+(?:[\\.][0-9]*)?|\\.[0-9]+)$", ErrorMessage = "please enter a valid price")]
         public decimal Price { get; set; }
 
         //navigation property

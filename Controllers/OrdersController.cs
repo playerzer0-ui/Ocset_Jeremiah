@@ -22,6 +22,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
             var jeremiah_SupermarketOnlineContext = _context.Order.Include(o => o.Customer).Include(o => o.Product);
             return View(await jeremiah_SupermarketOnlineContext.ToListAsync());
         }
@@ -29,6 +30,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
             if (id == null || _context.Order == null)
             {
                 return NotFound();
@@ -49,6 +51,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return RedirectToAction("Login", "Home");
@@ -99,6 +102,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return RedirectToAction("Login", "Home");
@@ -171,6 +175,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // GET: Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return RedirectToAction("Login", "Home");

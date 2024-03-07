@@ -1,4 +1,8 @@
-﻿SVG wave generator
+﻿UserName = admin 
+
+Password = password
+
+SVG wave generator
 
 https://www.softr.io/tools/svg-wave-generator
 
@@ -14,3 +18,19 @@ https://www.tesco.com/groceries/en-GB/zone/privacy-and-cookies-policy
 validation
 
 https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/validation?view=aspnetcore-8.0
+
+session
+
+https://learn.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-8.0
+
+positive numbers
+
+https://stackoverflow.com/questions/7036324/what-is-the-regex-for-any-positive-integer-excluding-0
+
+decimal positive
+
+https://stackoverflow.com/questions/7708333/regular-expression-to-accept-only-positive-numbers-and-decimals
+
+
+
+

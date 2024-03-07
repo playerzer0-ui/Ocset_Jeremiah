@@ -11,6 +11,7 @@ namespace Jeremiah_SupermarketOnline.Models
         public DateTime OrderDate { get; set; }
 
         [Required]
+        [RegularExpression("^[1-9]\\d*$", ErrorMessage = "please enter a valid quantity")]
         public int Quantity { get; set; }
 
         public int CustomerId { get; set; }
