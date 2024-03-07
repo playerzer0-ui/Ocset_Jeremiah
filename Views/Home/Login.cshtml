@@ -3,8 +3,9 @@
     ViewData["Title"] = "Login Page";
 }
 
-<main>
-    <div>
+<main class="center-div bg-login">
+    <div class="card-div">
+        <h1>Login</h1>
         <form asp-action="Login">
             @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
             {
