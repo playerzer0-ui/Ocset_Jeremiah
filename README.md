@@ -31,6 +31,8 @@ decimal positive
 
 https://stackoverflow.com/questions/7708333/regular-expression-to-accept-only-positive-numbers-and-decimals
 
+foreign relationship
 
+https://www.learnentityframeworkcore.com/configuration/one-to-many-relationship-configuration
 
 
