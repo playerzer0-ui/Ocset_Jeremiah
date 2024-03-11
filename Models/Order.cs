@@ -19,7 +19,7 @@ namespace Jeremiah_SupermarketOnline.Models
         public int ProductId { get; set; }
 
         //navigation property
-        public Customer Customer { get; set; } = new Customer();
-        public Product Product { get; set; } = new Product();
+        public Customer Customer { get; set; }
+        public Product Product { get; set; }
     }
 }
