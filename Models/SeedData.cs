@@ -37,6 +37,15 @@ namespace Jeremiah_SupermarketOnline.Models
                 context.Product.AddRange(products);
                 context.SaveChanges(); // Save products to generate identity values
 
+                var users = new List<User>
+                {
+                    new User { Username = "admin", Password = "password", UserType = 2 },
+                    new User { Username = "user", Password = "password", UserType = 1 }
+                };
+
+                context.Users.AddRange(users);
+                context.SaveChanges();
+
                 var orders = new List<Order>
                 {
                     new Order { OrderDate = new DateTime(2024, 12, 25, 10, 30, 50), Quantity = 10, CustomerId = customers[0].Id, ProductId = products[0].Id },

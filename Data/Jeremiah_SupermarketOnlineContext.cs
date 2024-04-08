@@ -17,6 +17,7 @@ namespace Jeremiah_SupermarketOnline.Data
         public DbSet<Customer> Customer { get; set; } = default!;
         public DbSet<Product> Product { get; set; } = default!;
         public DbSet<Order> Order { get; set; } = default!;
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
