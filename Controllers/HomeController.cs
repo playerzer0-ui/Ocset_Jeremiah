@@ -41,6 +41,12 @@ namespace Jeremiah_SupermarketOnline.Controllers
         [HttpPost]
         public IActionResult Register(RegisterModel registerModel)
         {
+            var u = _context.Users.FirstOrDefault(u => u.Username == registerModel.Username && u.Password == registerModel.Password);
+            if(u != null)
+            {
+                ViewBag.ErrorMessage = "Username taken. Please try again.";
+                return View(registerModel);
+            }
             if (ModelState.IsValid)
             {
                 // Create and save the user
@@ -62,6 +68,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
             }
 
             // If model state is not valid, return to registration page with validation errors
+            ViewBag.ErrorMessage = "Invalid credentials. Please try again.";
             return View(registerModel);
         }
 
