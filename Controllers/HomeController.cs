@@ -31,6 +31,40 @@ namespace Jeremiah_SupermarketOnline.Controllers
             return View();
         }
 
+        public IActionResult Register()
+        {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(RegisterModel registerModel)
+        {
+            if (ModelState.IsValid)
+            {
+                // Create and save the user
+                var user = new User
+                {
+                    Username = registerModel.Username,
+                    Password = registerModel.Password,
+                    UserType = 1
+                };
+
+                _context.Users.Add(user);
+                _context.SaveChanges();
+
+                HttpContext.Session.SetString("UserName", user.Username);
+                HttpContext.Session.SetInt32("UserType", user.UserType);
+                HttpContext.Session.CommitAsync();
+
+                return RedirectToAction("Index", "Products"); // Redirect to home page or any other page after registration
+            }
+
+            // If model state is not valid, return to registration page with validation errors
+            return View(registerModel);
+        }
+
         [HttpPost]
         public IActionResult Login(LoginModel loginModel)
         {
