@@ -52,7 +52,7 @@ namespace Jeremiah_SupermarketOnline
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Customers}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Login}/{id?}");
 
             app.Run();
         }

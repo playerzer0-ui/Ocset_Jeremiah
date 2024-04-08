@@ -20,12 +20,14 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public IActionResult Privacy()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             return View();
         }
 
         public IActionResult Login()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             return View();
         }
 
@@ -39,7 +41,14 @@ namespace Jeremiah_SupermarketOnline.Controllers
                 HttpContext.Session.SetInt32("UserType", user.UserType);
                 HttpContext.Session.CommitAsync();
 
-                return RedirectToAction("Index", "Customers");
+                if(user.UserType == 2)
+                {
+                    return RedirectToAction("Index", "Customers");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Products");
+                }
             }
             ViewBag.ErrorMessage = "Invalid credentials. Please try again.";
             return View();

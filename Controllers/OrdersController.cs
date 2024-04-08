@@ -23,6 +23,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             var jeremiah_SupermarketOnlineContext = _context.Order.Include(o => o.Customer).Include(o => o.Product);
             return View(await jeremiah_SupermarketOnlineContext.ToListAsync());
         }
@@ -31,6 +32,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (id == null || _context.Order == null)
             {
                 return NotFound();
@@ -52,6 +54,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public IActionResult Create()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return RedirectToAction("Login", "Home");
@@ -103,6 +106,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return RedirectToAction("Login", "Home");
@@ -176,6 +180,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return RedirectToAction("Login", "Home");
