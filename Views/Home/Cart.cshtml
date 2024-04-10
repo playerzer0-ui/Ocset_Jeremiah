@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Cart";
+}
+
+<main class="center-div bg-orders">
+    <div class="card-div">
+        <h1>Cart</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="cart-items">
+                <!-- Cart items will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<script>
+    // Retrieve cart data from localStorage
+    var cartData = localStorage.getItem('cart');
+    if (cartData) {
+        var cart = JSON.parse(cartData);
+
+        // Get the tbody element where cart items will be displayed
+        var cartItemsTbody = document.getElementById('cart-items');
+
+        // Loop through each item in the cart
+        Object.keys(cart).forEach(function (productId) {
+            var item = cart[productId];
+
+            // Create a new table row
+            var row = document.createElement('tr');
+
+            // Create table cells for product name, quantity, and action
+            var productNameCell = document.createElement('td');
+            productNameCell.textContent = item.productName; // You need to fetch product name based on productId
+            var quantityCell = document.createElement('td');
+            quantityCell.textContent = item.quantity;
+            var actionCell = document.createElement('td');
+            var removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove Item';
+            removeButton.classList.add('btn', 'btn-danger');
+            removeButton.addEventListener('click', function () {
+                // Implement logic to remove item from cart
+                // You can use productId to remove the item from the cart
+                // After removing, you need to update the displayed cart items
+            });
+            actionCell.appendChild(removeButton);
+
+            // Append table cells to the table row
+            row.appendChild(productNameCell);
+            row.appendChild(quantityCell);
+            row.appendChild(actionCell);
+
+            // Append the table row to the cart items tbody
+            cartItemsTbody.appendChild(row);
+        });
+    }
+</script>

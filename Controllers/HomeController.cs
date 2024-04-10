@@ -24,6 +24,13 @@ namespace Jeremiah_SupermarketOnline.Controllers
             return View();
         }
 
+        public IActionResult Cart()
+        {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
+            return View();
+        }
+
         public IActionResult Login()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");

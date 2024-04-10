@@ -2,15 +2,24 @@
 
 @{
     ViewData["Title"] = "Index";
+    int userType = Convert.ToInt32(ViewData["userType"]);
 }
 
 <main class="center-div bg-products">
     <div class="card-div">
         <h1>Products</h1>
 
-        <p>
-            <a asp-action="Create"><button class="button create-btn">Create New</button></a>
-        </p>
+        @if (userType == 2)
+        {
+            <p>
+                <a asp-action="Create"><button class="button create-btn">Create New</button></a>
+            </p>
+        }
+        @if (userType == 1)
+        {
+            <p>click on the checkboxes to select item</p>
+        }
+        
         <table class="table">
             <thead>
                 <tr>
@@ -38,14 +47,31 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Price)
                     </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
+                        @if(userType == 2)
+                        {
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <div>
+                                    <input type="checkbox" id="chk_@item.Id" />
+                                    <input type="number" id="quantity_@item.Id" placeholder="0" />
+                                </div>
+                            </td>
+                        }
+                    </tr>
         }
             </tbody>
         </table>
+
+        @if (userType == 1)
+        {
+            <button class="btn btn-primary" onclick="addAllToCart()">Add Selected Items to Cart</button>
+        }
     </div>
 </main>
