@@ -176,5 +176,31 @@ namespace Jeremiah_SupermarketOnline.Controllers
         {
           return (_context.Customer?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        public IActionResult Login()
+        {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(LoginModel loginModel)
+        {
+            if (loginModel.Name == "admin" && loginModel.Password == "password")
+            {
+                HttpContext.Session.SetString("UserName", "admin");
+                HttpContext.Session.CommitAsync();
+
+                return RedirectToAction("Index", "Customers");
+            }
+            ViewBag.ErrorMessage = "Invalid credentials. Please try again.";
+            return View();
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Customers");
+        }
     }
 }
