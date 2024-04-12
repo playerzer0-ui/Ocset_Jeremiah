@@ -26,6 +26,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
 
         public IActionResult Cart()
         {
+            ViewData["userId"] = HttpContext.Session.GetInt32("UserId");
             ViewData["name"] = HttpContext.Session.GetString("UserName");
             ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             return View();
@@ -67,6 +68,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
+                HttpContext.Session.SetInt32("UserId", user.Id);
                 HttpContext.Session.SetString("UserName", user.Username);
                 HttpContext.Session.SetInt32("UserType", user.UserType);
                 HttpContext.Session.CommitAsync();
@@ -85,6 +87,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
             var user = _context.Users.FirstOrDefault(u => u.Username == loginModel.Name && u.Password == loginModel.Password);
             if (user != null)
             {
+                HttpContext.Session.SetInt32("UserId", user.Id);
                 HttpContext.Session.SetString("UserName", user.Username);
                 HttpContext.Session.SetInt32("UserType", user.UserType);
                 HttpContext.Session.CommitAsync();

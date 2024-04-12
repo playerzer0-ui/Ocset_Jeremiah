@@ -102,6 +102,47 @@ namespace Jeremiah_SupermarketOnline.Controllers
             return View(order);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateMultiple(List<OrderCreateViewModel> orders)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var orderViewModel in orders)
+                {
+                    var orderEntity = new Order
+                    {
+                        OrderDate = orderViewModel.OrderDate,
+                        Quantity = orderViewModel.Quantity,
+                        CustomerId = orderViewModel.CustomerId,
+                        ProductId = orderViewModel.ProductId
+                    };
+
+                    orderEntity.Customer = await _context.Customer.FirstOrDefaultAsync(m => m.Id == orderViewModel.CustomerId);
+                    if (orderEntity.Customer == null)
+                    {
+                        // Handle error, customer not found
+                        return BadRequest($"Customer with ID {orderViewModel.CustomerId} not found");
+                    }
+                    orderEntity.Product = await _context.Product.FirstOrDefaultAsync(m => m.Id == orderViewModel.ProductId);
+                    if (orderEntity.Product == null)
+                    {
+                        // Handle error, product not found
+                        return BadRequest($"Product with ID {orderViewModel.ProductId} not found");
+                    }
+
+                    _context.Add(orderEntity);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Products");
+            }
+
+            // If ModelState is not valid, return view with errors
+            return View(orders);
+        }
+
+
         // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

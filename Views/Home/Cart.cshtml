@@ -5,7 +5,7 @@
 <main class="center-div bg-orders">
     <div class="card-div">
         <h1>Cart</h1>
-
+        <p>@ViewData["UserId"]</p>
         <table class="table">
             <thead>
                 <tr>
@@ -24,6 +24,7 @@
                 <!-- Cart items will be dynamically added here -->
             </tbody>
         </table>
+        <button id="place-order-btn" class="btn btn-primary">Place Order</button>
     </div>
 </main>
 
@@ -68,4 +69,46 @@
             cartItemsTbody.appendChild(row);
         });
     }
+
+    // Add event listener for the "Place Order" button
+    document.getElementById('place-order-btn').addEventListener('click', function () {
+        var orders = [];
+
+        // Loop through each item in the cart
+        Object.keys(cart).forEach(function (productId) {
+            var item = cart[productId];
+
+            // Create an order object with necessary properties
+            var order = {
+                OrderDate: new Date().toISOString(),
+                Quantity: item.quantity,
+                CustomerId: "@ViewData["UserId"]", // Retrieve customer ID from ViewData
+                ProductId: productId
+            };
+
+            // Add the order object to the orders array
+            orders.push(order);
+        });
+
+        // Create a hidden form to submit the orders
+        var form = document.createElement('form');
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/Orders/CreateMultiple'); // Set the action to your controller method
+        form.setAttribute('style', 'display: none;');
+
+        // Add hidden fields for each order item
+        orders.forEach(function (order, index) {
+            Object.keys(order).forEach(function (key) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', `orders[${index}].${key}`);
+                input.setAttribute('value', order[key]);
+                form.appendChild(input);
+            });
+        });
+
+        // Append the form to the document body and submit it
+        document.body.appendChild(form);
+        form.submit();
+    });
 </script>
