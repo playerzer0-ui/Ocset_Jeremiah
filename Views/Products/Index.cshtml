@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    int userType = Convert.ToInt32(ViewData["userType"]);
 }
 
 <main class="center-div bg-products">
@@ -29,7 +30,7 @@
             <tbody>
         @foreach (var item in Model) {
                 <tr>
-                    <td>
+                    <td id="itemName@(item.Id)">
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
@@ -39,10 +40,18 @@
                         @Html.DisplayFor(modelItem => item.Price)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
+                            @if(userType == 1)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                                <a asp-action = "Details" asp-route-id = "@item.Id" > Details </a> 
+                                <a asp-action = "Delete" asp-route-id = "@item.Id" > Delete </a>
+                            }
+                            else
+                            {
+                                <input type="number" placeholder="0" id="quantityInput@(item.Id)" />
+                                <button class="btn btn-primary" onclick="addToCart(@item.Id)">Buy</button>
+                            }
+                        </td>
                 </tr>
         }
             </tbody>

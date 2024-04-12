@@ -79,7 +79,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
                 };
 
                 orderEntity.Customer = await _context.Customer.FirstOrDefaultAsync(m => m.Id == order.CustomerId);
-                if(orderEntity.Customer == null)
+                if (orderEntity.Customer == null)
                 {
                     return View(order);
                 }
@@ -211,14 +211,23 @@ namespace Jeremiah_SupermarketOnline.Controllers
             {
                 _context.Order.Remove(order);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool OrderExists(int id)
         {
-          return (_context.Order?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Order?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        public IActionResult Cart()
+        {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userId"] = HttpContext.Session.GetString("UserId");
+            return View();
+        }
+
+
     }
 }
