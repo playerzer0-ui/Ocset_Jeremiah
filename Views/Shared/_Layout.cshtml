@@ -35,6 +35,9 @@
                         @if(ViewData["name"] == null)
                         {
                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Customers" asp-action="Register">Register</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Customers" asp-action="Login">Login</a>
                             </li>
                         }

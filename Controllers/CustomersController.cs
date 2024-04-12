@@ -177,6 +177,53 @@ namespace Jeremiah_SupermarketOnline.Controllers
           return (_context.Customer?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterModel registerModel)
+        {
+            if (ModelState.IsValid)
+            {
+                // Check if a user with the provided username already exists
+                var existingUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == registerModel.Name);
+
+                if (existingUser != null)
+                {
+                    // User with the same username already exists, return to the registration view with an error message
+                    ViewBag.ErrorMessage = "A user with the same username already exists. Please choose a different username.";
+                    return View();
+                }
+
+                // Create a new customer entity with the provided data
+                var newCustomer = new Customer
+                {
+                    Name = registerModel.Name,
+                    Password = registerModel.Password,
+                    Address = registerModel.Address
+                };
+
+                // Add the new customer to the database
+                _context.Customer.Add(newCustomer);
+                await _context.SaveChangesAsync();
+
+                HttpContext.Session.SetString("UserName", newCustomer.Name);
+                HttpContext.Session.SetInt32("UserId", newCustomer.Id);
+                HttpContext.Session.SetInt32("UserType", newCustomer.UserType);
+                await HttpContext.Session.CommitAsync();
+
+                // Redirect to the appropriate action based on user type or requirement
+                return RedirectToAction("Index", "Customers");
+            }
+
+            // ModelState is not valid, return to the registration view
+            return View(registerModel);
+        }
+
+
         public IActionResult Login()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
@@ -186,16 +233,34 @@ namespace Jeremiah_SupermarketOnline.Controllers
         [HttpPost]
         public IActionResult Login(LoginModel loginModel)
         {
-            if (loginModel.Name == "admin" && loginModel.Password == "password")
+            if (ModelState.IsValid)
             {
-                HttpContext.Session.SetString("UserName", "admin");
-                HttpContext.Session.CommitAsync();
+                // Check if a customer with the provided username exists in the database
+                var customer = _context.Customer.FirstOrDefault(c => c.Name == loginModel.Name && c.Password == loginModel.Password);
 
-                return RedirectToAction("Index", "Customers");
+                if (customer != null)
+                {
+                    // Customer exists, set session variables or perform any other required actions
+                    HttpContext.Session.SetString("UserName", customer.Name);
+                    HttpContext.Session.SetInt32("UserId", customer.Id);
+                    HttpContext.Session.SetInt32("UserType", customer.UserType);
+                    HttpContext.Session.CommitAsync();
+
+                    // Redirect to the appropriate action based on user type or requirement
+                    return RedirectToAction("Index", "Customers");
+                }
+                else
+                {
+                    // Customer does not exist or credentials are invalid
+                    ViewBag.ErrorMessage = "Invalid credentials. Please try again.";
+                    return View();
+                }
             }
-            ViewBag.ErrorMessage = "Invalid credentials. Please try again.";
+
+            // ModelState is not valid, return to the login view
             return View();
         }
+
 
         public IActionResult Logout()
         {
