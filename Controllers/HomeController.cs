@@ -16,6 +16,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public IActionResult Privacy()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             return View();
         }
 

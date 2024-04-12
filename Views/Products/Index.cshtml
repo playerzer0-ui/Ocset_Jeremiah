@@ -9,9 +9,12 @@
     <div class="card-div">
         <h1>Products</h1>
 
+        @if(userType == 1)
+        {
         <p>
             <a asp-action="Create"><button class="button create-btn">Create New</button></a>
         </p>
+        }
         <table class="table">
             <thead>
                 <tr>

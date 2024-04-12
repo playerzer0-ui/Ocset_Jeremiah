@@ -23,15 +23,30 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
-            return _context.Customer != null ? 
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
+
+            if (HttpContext.Session.GetInt32("UserType") == 1)
+            {
+                return _context.Customer != null ? 
                           View(await _context.Customer.ToListAsync()) :
                           Problem("Entity set 'Jeremiah_SupermarketOnlineContext.Customer'  is null.");
+            }
+            else if(HttpContext.Session.GetInt32("UserType") == 0)
+            {
+                return RedirectToAction("Index", "Products");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Customers");
+            }
+
         }
 
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (id == null || _context.Customer == null)
             {
                 return NotFound();
@@ -51,6 +66,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public IActionResult Create()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return RedirectToAction("Login", "Customers");
@@ -78,6 +94,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return RedirectToAction("Login", "Customers");
@@ -134,6 +151,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return RedirectToAction("Login", "Customers");
@@ -227,6 +245,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public IActionResult Login()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             return View();
         }
 
