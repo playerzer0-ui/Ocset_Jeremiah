@@ -2,12 +2,14 @@
 
 @{
     ViewData["Title"] = "Index";
+    int userId = Convert.ToInt32(ViewData["userId"]);
 }
 
 <main class="center-div bg-orders">
     <div class="card-div">
         <h1>Cart</h1>
-        <form asp-action="CreateMultiple">
+        
+            <input id="userId" type="hidden" value="@(userId)" />
             <table class="table">
                 <thead>
                     <tr>
@@ -18,16 +20,10 @@
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <tr>
-                        <td>2</td>
-                        <td>coil</td>
-                        <td>13</td>
-                        <td><button class="btn btn-danger">remove button</button></td>
-                    </tr>
                 </tbody>
             </table>
             <button class="btn btn-primary" onclick="placeOrder()">Place Order</button>
-        </form>
+        
     </div>
 </main>
 

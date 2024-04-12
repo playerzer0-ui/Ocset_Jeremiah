@@ -224,10 +224,41 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public IActionResult Cart()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
-            ViewData["userId"] = HttpContext.Session.GetString("UserId");
+            ViewData["userId"] = HttpContext.Session.GetInt32("UserId");
             return View();
         }
 
+        [HttpPost]
+        public IActionResult CreateMultiple([FromBody] List<OrderCreateViewModel> orders)
+        {
+            try
+            {
+                foreach (var order in orders)
+                {
+                    var orderEntity = new Order
+                    {
+                        OrderDate = DateTime.Now, // You can set the order date here
+                        Quantity = order.Quantity,
+                        CustomerId = order.CustomerId,
+                        ProductId = order.ProductId
+                    };
+
+                    // You may want to perform additional validation or checks here
+
+                    _context.Order.Add(orderEntity);
+                }
+
+                _context.SaveChanges();
+
+                // Return success message or status code
+                return RedirectToAction("Index", "Orders");
+            }
+            catch (Exception ex)
+            {
+                // Return error message or status code
+                return StatusCode(500, "An error occurred while creating multiple orders: " + ex.Message);
+            }
+        }
 
     }
 }
