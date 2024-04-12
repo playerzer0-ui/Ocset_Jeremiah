@@ -53,7 +53,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
             ViewData["name"] = HttpContext.Session.GetString("UserName");
             if (HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Customers");
             }
             return View();
         }
@@ -63,7 +63,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Address")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,Name,Password,Address")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
             ViewData["name"] = HttpContext.Session.GetString("UserName");
             if (HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Customers");
             }
             if (id == null || _context.Customer == null)
             {
@@ -100,7 +100,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Password,Address")] Customer customer)
         {
             if (id != customer.Id)
             {
@@ -136,7 +136,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
             ViewData["name"] = HttpContext.Session.GetString("UserName");
             if (HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Customers");
             }
             if (id == null || _context.Customer == null)
             {

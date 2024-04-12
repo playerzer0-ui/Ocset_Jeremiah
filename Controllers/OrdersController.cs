@@ -54,7 +54,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
             ViewData["name"] = HttpContext.Session.GetString("UserName");
             if (HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Customers");
             }
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name");
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Name");
@@ -105,7 +105,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
             ViewData["name"] = HttpContext.Session.GetString("UserName");
             if (HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Customers");
             }
             if (id == null || _context.Order == null)
             {
@@ -178,7 +178,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
             ViewData["name"] = HttpContext.Session.GetString("UserName");
             if (HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Customers");
             }
             if (id == null || _context.Order == null)
             {
