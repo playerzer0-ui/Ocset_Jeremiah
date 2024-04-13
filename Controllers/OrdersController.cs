@@ -23,6 +23,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             var jeremiah_SupermarketOnlineContext = _context.Order.Include(o => o.Customer).Include(o => o.Product);
             return View(await jeremiah_SupermarketOnlineContext.ToListAsync());
         }
@@ -31,6 +32,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (id == null || _context.Order == null)
             {
                 return NotFound();
@@ -52,9 +54,10 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public IActionResult Create()
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Customers");
             }
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name");
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Name");
@@ -79,7 +82,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
                 };
 
                 orderEntity.Customer = await _context.Customer.FirstOrDefaultAsync(m => m.Id == order.CustomerId);
-                if(orderEntity.Customer == null)
+                if (orderEntity.Customer == null)
                 {
                     return View(order);
                 }
@@ -103,9 +106,10 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Customers");
             }
             if (id == null || _context.Order == null)
             {
@@ -176,9 +180,10 @@ namespace Jeremiah_SupermarketOnline.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
             if (HttpContext.Session.GetString("UserName") == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Customers");
             }
             if (id == null || _context.Order == null)
             {
@@ -211,14 +216,55 @@ namespace Jeremiah_SupermarketOnline.Controllers
             {
                 _context.Order.Remove(order);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool OrderExists(int id)
         {
-          return (_context.Order?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Order?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        public IActionResult Cart()
+        {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userId"] = HttpContext.Session.GetInt32("UserId");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateMultiple([FromBody] List<OrderCreateViewModel> orders)
+        {
+            try
+            {
+                foreach (var order in orders)
+                {
+                    var orderEntity = new Order
+                    {
+                        OrderDate = DateTime.Now, // You can set the order date here
+                        Quantity = order.Quantity,
+                        CustomerId = order.CustomerId,
+                        ProductId = order.ProductId
+                    };
+
+                    // You may want to perform additional validation or checks here
+
+                    _context.Order.Add(orderEntity);
+                }
+
+                _context.SaveChanges();
+
+                // Return success message or status code
+                return RedirectToAction("Index", "Orders");
+            }
+            catch (Exception ex)
+            {
+                // Return error message or status code
+                return StatusCode(500, "An error occurred while creating multiple orders: " + ex.Message);
+            }
+        }
+
     }
 }

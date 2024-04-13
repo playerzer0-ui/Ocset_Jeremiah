@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Jeremiah_SupermarketOnline.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+    int userId = Convert.ToInt32(ViewData["userId"]);
+}
+
+<main class="center-div bg-orders">
+    <div class="card-div">
+        <h1>Cart</h1>
+        
+            <input id="userId" type="hidden" value="@(userId)" />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+            <button class="btn btn-primary" onclick="placeOrder()">Place Order</button>
+        
+    </div>
+</main>
+
+<script>
+    displayCart();
+</script>

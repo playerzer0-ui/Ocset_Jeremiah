@@ -4,6 +4,7 @@ using Jeremiah_SupermarketOnline.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Jeremiah_SupermarketOnline.Migrations
 {
     [DbContext(typeof(Jeremiah_SupermarketOnlineContext))]
-    partial class Jeremiah_SupermarketOnlineContextModelSnapshot : ModelSnapshot
+    [Migration("20240412063129_Customer-Update")]
+    partial class CustomerUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

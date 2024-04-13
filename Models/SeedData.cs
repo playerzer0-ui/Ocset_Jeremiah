@@ -19,9 +19,9 @@ namespace Jeremiah_SupermarketOnline.Models
 
                 var customers = new List<Customer>
                 {
-                    new Customer { Name = "harry", Address = "Trelew 14" },
-                    new Customer { Name = "bob", Address = "Trelew 10" },
-                    new Customer { Name = "lee", Address = "something" }
+                    new Customer { Name = "harry", Password = "password", Address = "Trelew 14", UserType = 0 },
+                    new Customer { Name = "bob", Password = "password", Address = "Trelew 10", UserType = 0 },
+                    new Customer { Name = "admin", Password = "password", Address = "something", UserType = 1 }
                 };
 
                 var products = new List<Product>
