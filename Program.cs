@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Jeremiah_SupermarketOnline.Data;
 using Jeremiah_SupermarketOnline.Models;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Jeremiah_SupermarketOnline
 {
@@ -10,6 +12,19 @@ namespace Jeremiah_SupermarketOnline
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddAuthentication(googleOptions =>
+            {
+                googleOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                googleOptions.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+             {
+                 options.ClientId = builder.Configuration.GetSection("GoogleKeys:ClientId").Value;
+                 options.ClientSecret = builder.Configuration.GetSection("GoogleKeys:ClientSecret").Value;
+             });
+
             builder.Services.AddDbContext<Jeremiah_SupermarketOnlineContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Jeremiah_SupermarketOnlineContext") ?? throw new InvalidOperationException("Connection string 'Jeremiah_SupermarketOnlineContext' not found.")));
 
@@ -40,6 +55,8 @@ namespace Jeremiah_SupermarketOnline
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+          
+            
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

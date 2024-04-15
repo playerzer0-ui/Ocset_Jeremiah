@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Jeremiah_SupermarketOnline.Data;
 using Jeremiah_SupermarketOnline.Models;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.Data.SqlClient;
 
 namespace Jeremiah_SupermarketOnline.Controllers
 {
@@ -285,6 +290,65 @@ namespace Jeremiah_SupermarketOnline.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Customers");
+        }
+
+        //GoogleLogin
+        public async Task GoogleLogin()
+        {
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
+                new AuthenticationProperties
+                {
+                    RedirectUri = Url.Action("GoogleResponse")
+                }
+                );
+        }
+
+        public  async Task <IActionResult> GoogleResponse()
+        {
+         var results = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = results.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+            {
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+
+            }
+            );
+            var existingUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == User.Identity.Name);
+            Customer c = new Customer();
+            c.UserType = 0;
+            c.Password = "none";
+            if (existingUser == null)
+            {
+                c.Name = User.Identity.Name;
+                _context.Add(c);
+            }
+            else
+            {
+                string name ="";
+
+                while (existingUser!=null) {
+                    Random random = new Random();
+                    // Any random integer   
+                    int num = random.Next();
+                    name = User.Identity.Name + num + "";
+                    existingUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == name);
+
+                }
+                c.Name=name;
+            }
+                _context.Add(c);
+                var newUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == c.Name);
+                await _context.SaveChangesAsync();
+                HttpContext.Session.SetInt32("UserId", newUser.Id);
+                HttpContext.Session.SetString("UserName", newUser.Name);
+                HttpContext.Session.SetInt32("UserType", newUser.UserType);
+                HttpContext.Session.CommitAsync();
+
+                return RedirectToAction("Index", "Customers");
+           
+
         }
     }
 }
