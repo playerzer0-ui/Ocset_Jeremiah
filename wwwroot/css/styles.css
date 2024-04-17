@@ -43,6 +43,10 @@ a {
     height: 70%;
 }
 
+.meal-image {
+    width: 40%;
+}
+
 .button {
     padding: 5px;
     border-radius: 10px;

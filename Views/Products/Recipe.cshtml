@@ -7,5 +7,7 @@
 <main class="center-div bg-orders">
     <div class="card-div">
         <h1>@Html.DisplayFor(modelItem => Model.strMeal)</h1>
+        <img class="meal-image" src=@Html.DisplayFor(modelItem => Model.strMealThumb) />
+        <a href=@Html.DisplayFor(modelItem => Model.strSource)><button class="btn btn-primary">recipe link</button></a>
     </<div>
 </main>
