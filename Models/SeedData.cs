@@ -26,9 +26,15 @@ namespace Jeremiah_SupermarketOnline.Models
 
                 var products = new List<Product>
                 {
-                    new Product { Name = "coil", Description = "a coil", Price = 2.10M },
+                    new Product { Name = "chicken breast", Description = "chicken breast", Price = 2.10M },
+                    new Product { Name = "rice", Description = "jasmine rice", Price = 1.10M },
+                    new Product { Name = "pork", Description = "pig meat", Price = 3.10M },
                     new Product { Name = "bread", Description = "wholewheat bread", Price = 1.10M },
-                    new Product { Name = "rotisserie chicken", Description = "chicken roasted healthily", Price = 6.00M }
+                    new Product { Name = "salt", Description = "table salt", Price = 0.50M },
+                    new Product { Name = "pepper", Description = "black pepper", Price = 0.50M },
+                    new Product { Name = "sugar", Description = "sugar", Price = 0.99M },
+                    new Product { Name = "soy sauce", Description = "lee kum kee soy sauce", Price = 2.10M },
+                    new Product { Name = "chicken", Description = "chicken on the bone", Price = 6.00M }
                 };
 
                 context.Customer.AddRange(customers);

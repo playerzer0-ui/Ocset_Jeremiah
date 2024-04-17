@@ -36,3 +36,8 @@ foreign relationship
 https://www.learnentityframeworkcore.com/configuration/one-to-many-relationship-configuration
 
 
+https://www.themealdb.com/api/json/v1/1/filter.php?i=bread (get a random meal
+based on what's
+in database)
+
+https://www.themealdb.com/api/json/v1/1/lookup.php?i=52770 (sphagetti bolognese)

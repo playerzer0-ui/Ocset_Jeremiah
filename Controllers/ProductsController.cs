@@ -7,12 +7,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Jeremiah_SupermarketOnline.Data;
 using Jeremiah_SupermarketOnline.Models;
+using RestSharp;
+using Newtonsoft.Json;
 
 namespace Jeremiah_SupermarketOnline.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly Jeremiah_SupermarketOnlineContext _context;
+        private RestClient client;
+        private RestRequest request;
+        private RestResponse response;
 
         public ProductsController(Jeremiah_SupermarketOnlineContext context)
         {
@@ -180,6 +185,36 @@ namespace Jeremiah_SupermarketOnline.Controllers
         private bool ProductExists(int id)
         {
           return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        public async Task<IActionResult> Recipe()
+        {
+            client = new RestClient("https://www.themealdb.com/api/json/v1/1/");
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
+
+            var randomProduct = await _context.Product
+            .OrderBy(p => Guid.NewGuid())
+            .Select(p => p.Name)
+            .FirstOrDefaultAsync();
+
+            request = new RestRequest("filter.php?i=" + randomProduct);
+            response = client.Execute(request);
+
+            RootobjectFilter rootFilter = JsonConvert.DeserializeObject<RootobjectFilter>(response.Content);
+            FilterMeal[] filterMeals = rootFilter.meals;
+            Random rg = new Random();
+            int rand = rg.Next(0, filterMeals.Length);
+            string id = filterMeals[rand].idMeal;
+
+            request = new RestRequest("lookup.php?i=" + id);
+            response = client.Execute(request);
+
+            Rootobject root = JsonConvert.DeserializeObject<Rootobject>(response.Content);
+            Recipe[] meals = root.meals;
+
+
+            return View(meals[0]);
         }
     }
 }
