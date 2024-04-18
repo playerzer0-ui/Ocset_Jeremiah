@@ -7,7 +7,44 @@
 <main class="center-div bg-orders">
     <div class="card-div">
         <h1>@Html.DisplayFor(modelItem => Model.strMeal)</h1>
-        <img class="meal-image" src=@Html.DisplayFor(modelItem => Model.strMealThumb) />
-        <a href=@Html.DisplayFor(modelItem => Model.strSource)><button class="btn btn-primary">recipe link</button></a>
-    </<div>
+        <div class="row">
+            <div class="col-md-4">
+                <img class="meal-image" src=@Html.DisplayFor(modelItem => Model.strMealThumb) />
+            </div>
+            <div class="col-md-8">
+                <table class="ingredients">
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient1)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient2)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient3)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient4)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient5)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient6)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient7)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient8)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient9)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient10)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient11)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient12)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient13)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient14)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient15)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient16)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient17)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient18)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient19)</td>
+                        <td>@Html.DisplayFor(modelItem => Model.strIngredient20)</td>
+                    </tr>
+                </table>
+                <p>@Html.DisplayFor(modelItem => Model.strInstructions)</p>
+                <a href=@Html.DisplayFor(modelItem => Model.strSource)><button class="btn btn-primary">recipe link</button></a>
+            </div>
+        </div>
+    </div>
 </main>

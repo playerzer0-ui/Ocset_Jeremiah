@@ -44,7 +44,21 @@ a {
 }
 
 .meal-image {
-    width: 40%;
+    width: 90%;
+}
+
+.ingredients {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.ingredients td {
+    text-align: center;
+}
+
+/* vertical dividers */
+.ingredients td:not(:last-child) {
+    border-right: 2px solid #ddd;
 }
 
 .button {
