@@ -310,9 +310,9 @@ namespace Jeremiah_SupermarketOnline.Controllers
                 );
         }
 
-        public  async Task <IActionResult> GoogleResponse()
+        public async Task<IActionResult> GoogleResponse()
         {
-         var results = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var results = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var claims = results.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
             {
                 claim.Issuer,
@@ -326,34 +326,43 @@ namespace Jeremiah_SupermarketOnline.Controllers
             Customer c = new Customer();
             c.UserType = 0;
             c.Password = "none";
+            c.Name = User.Identity.Name;
             if (existingUser == null)
             {
-                c.Name = User.Identity.Name;
-                _context.Add(c);
-            }
-            else
-            {
-                string name ="";
-
-                while (existingUser!=null) {
-                    Random random = new Random();
-                    // Any random integer   
-                    int num = random.Next();
-                    name = User.Identity.Name + num + "";
-                    existingUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == name);
-
-                }
-                c.Name=name;
-            }
                 _context.Add(c);
                 var newUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == c.Name);
                 await _context.SaveChangesAsync();
-                HttpContext.Session.SetInt32("UserId", newUser.Id);
+                HttpContext.Session.SetInt32
+                    ("UserId", newUser.Id);
                 HttpContext.Session.SetString("UserName", newUser.Name);
                 HttpContext.Session.SetInt32("UserType", newUser.UserType);
                 HttpContext.Session.CommitAsync();
 
-                return RedirectToAction("Index", "Customers");
+                return RedirectToAction("Index", "Products");
+
+            }
+            else
+            {
+                if (existingUser.Password == "none")
+                {
+
+                    var newUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == c.Name);
+                    await _context.SaveChangesAsync();
+                    HttpContext.Session.SetInt32
+                        ("UserId", newUser.Id);
+                    HttpContext.Session.SetString("UserName", newUser.Name);
+                    HttpContext.Session.SetInt32("UserType", newUser.UserType);
+                    HttpContext.Session.CommitAsync();
+
+                    return RedirectToAction("Index", "Products");
+                }
+
+
+            }
+
+            ViewBag.ErrorMessage = "Invalid credentials. Username is taken.";
+            return RedirectToAction("Login", "Customers");
+
         }
 
         public async Task<IActionResult> MicrosoftLogin(string code)
@@ -381,7 +390,53 @@ namespace Jeremiah_SupermarketOnline.Controllers
 
                 var response2 = client2.Execute(request);
                 var content2 = response2.Content;
-                var useremail = (JObject)JsonConvert.DeserializeObject(content2);
+                var msDetails = JsonConvert.DeserializeObject<MsLogin>(content2);
+
+
+                 var username = msDetails.displayName;
+
+
+                var existingUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == username);
+                Customer c = new Customer();
+                c.UserType = 0;
+                c.Password = "none";
+                c.Name = User.Identity.Name;
+                if (existingUser == null)
+                {
+                    _context.Add(c);
+                    var newUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == c.Name);
+                    await _context.SaveChangesAsync();
+                    HttpContext.Session.SetInt32("UserId", newUser.Id);
+                    HttpContext.Session.SetString("UserName", newUser.Name);
+                    HttpContext.Session.SetInt32("UserType", newUser.UserType);
+                    HttpContext.Session.CommitAsync();
+
+                    return RedirectToAction("Index", "Products");
+
+                }
+                else
+                {
+                    if (existingUser.Password == "none")
+                    {
+
+                        var newUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == c.Name);
+                        await _context.SaveChangesAsync();
+                        HttpContext.Session.SetInt32
+                            ("UserId", newUser.Id);
+                        HttpContext.Session.SetString("UserName", newUser.Name);
+                        HttpContext.Session.SetInt32("UserType", newUser.UserType);
+                        HttpContext.Session.CommitAsync();
+
+                        return RedirectToAction("Index", "Products");
+                    }
+
+
+                }
+
+                ViewBag.ErrorMessage = "Invalid credentials. Username is taken.";
+                return RedirectToAction("Login", "Customers");
+
+
 
             }
             return RedirectToAction("Index", "Products");
