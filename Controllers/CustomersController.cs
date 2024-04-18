@@ -400,7 +400,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
                 Customer c = new Customer();
                 c.UserType = 0;
                 c.Password = "none";
-                c.Name = User.Identity.Name;
+                c.Name = username;
                 if (existingUser == null)
                 {
                     _context.Add(c);
@@ -429,12 +429,15 @@ namespace Jeremiah_SupermarketOnline.Controllers
 
                         return RedirectToAction("Index", "Products");
                     }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Invalid credentials. Username is taken.";
+                        return RedirectToAction("Login", "Customers");
+                    }
 
 
                 }
 
-                ViewBag.ErrorMessage = "Invalid credentials. Username is taken.";
-                return RedirectToAction("Login", "Customers");
 
 
 
