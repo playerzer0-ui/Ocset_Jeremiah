@@ -397,14 +397,14 @@ namespace Jeremiah_SupermarketOnline.Controllers
 
 
                 var existingUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == username);
-                Customer c = new Customer();
-                c.UserType = 0;
-                c.Password = "none";
-                c.Name = username;
+                Customer cu = new Customer();
+                cu.UserType = 0;
+                cu.Password = "none";
+                cu.Name = username;
                 if (existingUser == null)
                 {
-                    _context.Add(c);
-                    var newUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == c.Name);
+                    _context.Add(cu);
+                    var newUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == cu.Name);
                     await _context.SaveChangesAsync();
                     HttpContext.Session.SetInt32("UserId", newUser.Id);
                     HttpContext.Session.SetString("UserName", newUser.Name);
@@ -419,7 +419,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
                     if (existingUser.Password == "none")
                     {
 
-                        var newUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == c.Name);
+                        var newUser = await _context.Customer.FirstOrDefaultAsync(c => c.Name == cu.Name);
                         await _context.SaveChangesAsync();
                         HttpContext.Session.SetInt32
                             ("UserId", newUser.Id);
@@ -442,7 +442,7 @@ namespace Jeremiah_SupermarketOnline.Controllers
 
 
             }
-            return RedirectToAction("Index", "Products");
+            return RedirectToAction("Login", "Customers");
         }
     }
 }
