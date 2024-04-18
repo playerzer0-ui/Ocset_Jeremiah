@@ -12,12 +12,19 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.Data.SqlClient;
+using RestSharp;
+using System.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Jeremiah_SupermarketOnline.Controllers
 {
     public class CustomersController : Controller
     {
         private readonly Jeremiah_SupermarketOnlineContext _context;
+        private RestClient client;
+        private RestRequest request;
+        private RestResponse response;
 
         public CustomersController(Jeremiah_SupermarketOnlineContext context)
         {
@@ -347,8 +354,37 @@ namespace Jeremiah_SupermarketOnline.Controllers
                 HttpContext.Session.CommitAsync();
 
                 return RedirectToAction("Index", "Customers");
-           
+        }
 
+        public async Task<IActionResult> MicrosoftLogin(string code)
+        {
+            if (!string.IsNullOrWhiteSpace(code))
+            {
+                client = new RestClient("https://login.microsoftonline.com/");
+                request = new RestRequest("common/oauth2/v2.0/token", Method.Post);
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+
+                request.AddParameter("grant_type", "authorization_code");
+                request.AddParameter("code", code);
+                request.AddParameter("redirect_uri", "https://localhost:7124/Customers/MicrosoftLogin");
+
+                request.AddParameter("client_id", "9439fa1f-6483-4598-b1c6-825d53d284be");
+                request.AddParameter("client_secret", "mzL8Q~s6-h7lJPFm376DLLdjrHpG.G965uocqcoD");
+
+                response = client.Execute(request);
+                var content = response.Content;
+                var res = (JObject)JsonConvert.DeserializeObject(content);
+
+                var client2 = new RestClient("https://graph.microsoft.com");
+                client2.AddDefaultHeader("Authorization", "Bearer" + res["access_token"]);
+                request = new RestRequest("/v1.0/me", Method.Get);
+
+                var response2 = client2.Execute(request);
+                var content2 = response2.Content;
+                var useremail = (JObject)JsonConvert.DeserializeObject(content2);
+
+            }
+            return RedirectToAction("Index", "Products");
         }
     }
 }

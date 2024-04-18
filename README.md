@@ -41,3 +41,11 @@ based on what's
 in database)
 
 https://www.themealdb.com/api/json/v1/1/lookup.php?i=52770 (sphagetti bolognese)
+
+
+ID
+9439fa1f-6483-4598-b1c6-825d53d284be
+SECRET
+mzL8Q~s6-h7lJPFm376DLLdjrHpG.G965uocqcoD
+<a href="https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=9439fa1f-6483-4598-b1c6-825d53d284be&response_type=code&redirect_uri=https://localhost:7124/MicrosoftLogin&response_mode=query&scope=offline_access%20user.read%20mail.read&state=12345">microsoft login</a>
+"https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=9439fa1f-6483-4598-b1c6-825d53d284be&response_type=code&redirect_uri=https://localhost:7124/MicrosoftLogin&response_mode=query&scope=offline_access%20user.read%20mail.read&state=12345"
