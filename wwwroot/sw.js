@@ -10,7 +10,7 @@ const assets = [
     '/Customers/Register',
     '/Home/Fallback',
     '/css/styles.css?v=yKtIB1H3dic61ZH37T0UEx7hjJZXquDkLc45ypkgAeY',
-    '/css/site.css?v=omRbCddzb4aoq0bPPPp1iIUFO8KY9uW53yx8xPUwDQE',
+    '/css/site.css?v=omRbCddzb4aoq0bPPPp1iIUFO8KY9uW53yx8xPUwDQE'
 
 ];
 
