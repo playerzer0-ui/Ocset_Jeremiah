@@ -1,0 +1,79 @@
+﻿@model Jeremiah_SupermarketOnline.Models.Filter
+
+@{
+    ViewData["Title"] = "Index";
+   int userType = Convert.ToInt32(ViewData["userType"]);
+
+}
+
+<main class="center-div bg-products">
+    <div class="card-div">
+        <h1>Products</h1>
+
+        @if (userType == 1)
+        {
+            <p>
+                <a asp-action="Create"><button class="button create-btn">Create New</button></a>
+            </p>
+        }
+        <form asp-controller="Products" asp-action="Filter">
+            <p>
+                <select asp-for="allProducts">
+                    <option value="">All</option>
+                    @foreach (var item in Model.allProducts)
+                    {
+                        <option  value="@item.Name">@item.Name</option>
+                    }
+                </select>
+
+                Max Price: <input type="number" min="0" name="Price" />
+                <input type="submit" value="Filter" />
+            </p>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.filteredProducts![0].Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.filteredProducts![0].Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.filteredProducts![0].Price)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.filteredProducts)
+                {
+                    <tr>
+                        <td id="itemName@(item.Id)">
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @if (userType == 1)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.Id"> Details </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id"> Delete </a>
+                            }
+                            else
+                            {
+                                <input type="number" placeholder="0" id="quantityInput@(item.Id)" />
+                                <button class="btn btn-primary" onclick="addToCart(@item.Id)">Buy</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</main>

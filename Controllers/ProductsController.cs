@@ -9,6 +9,7 @@ using Jeremiah_SupermarketOnline.Data;
 using Jeremiah_SupermarketOnline.Models;
 using RestSharp;
 using Newtonsoft.Json;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Jeremiah_SupermarketOnline.Controllers
 {
@@ -25,13 +26,15 @@ namespace Jeremiah_SupermarketOnline.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? price, string? SearchString)
         {
+           
             ViewData["name"] = HttpContext.Session.GetString("UserName");
             ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
-            return _context.Product != null ? 
-                          View(await _context.Product.ToListAsync()) :
-                          Problem("Entity set 'Jeremiah_SupermarketOnlineContext.Product'  is null.");
+            return _context.Product != null ?
+                         View(await _context.Product.ToListAsync()) :
+                         Problem("Entity set 'Jeremiah_SupermarketOnlineContext.Product'  is null.");
+
         }
 
         // GET: Products/Details/5
@@ -177,14 +180,14 @@ namespace Jeremiah_SupermarketOnline.Controllers
             {
                 _context.Product.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-          return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
         public async Task<IActionResult> Recipe()
@@ -216,5 +219,48 @@ namespace Jeremiah_SupermarketOnline.Controllers
 
             return View(meals[0]);
         }
+   
+
+   public async Task<IActionResult> Filter(int? price, string? allProducts)
+    {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
+
+            if (_context.Product == null)
+        {
+            return Problem("Entity set 'Jeremiah_SupermarketOnlineContext.Product'  is null.");
+        }
+        var products = from p in _context.Product
+                      select p;
+
+            Filter f =new Filter();
+            List<Product> allProduct = new List<Product>();
+            List<Product> filteredProducts = new List<Product>();
+            foreach (var item in products)
+            {
+                allProduct.Add(item);
+            }
+            f.allProducts = allProduct;
+                if (!string.IsNullOrEmpty(allProducts))
+        {
+            products = products.Where(s => s.Name!.Contains(allProducts));
+        }
+
+        if (price >= 0)
+        {
+            products = products.Where(x => x.Price <= price);
+
+        }
+            foreach (var item in products)
+            {
+                filteredProducts.Add(item);
+            }
+            f.filteredProducts = filteredProducts;
+
+
+            return View(f);
+
     }
+}
+
 }
