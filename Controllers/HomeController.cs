@@ -20,6 +20,13 @@ namespace Jeremiah_SupermarketOnline.Controllers
             return View();
         }
 
+        public IActionResult Fallback()
+        {
+            ViewData["name"] = HttpContext.Session.GetString("UserName");
+            ViewData["userType"] = HttpContext.Session.GetInt32("UserType");
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
